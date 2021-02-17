@@ -43,7 +43,13 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: SquigglyLines(color: Colors.red)
+        child: SizedBox(
+          width:122, height: 100,
+          child: Container(
+            color:Colors.yellow,
+            child: SquigglyLines(color: Colors.red, animDuration: 1,),
+          ),
+        )
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,

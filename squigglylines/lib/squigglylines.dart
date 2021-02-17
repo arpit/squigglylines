@@ -5,10 +5,12 @@ class SquigglyLines extends StatefulWidget {
 
   final Color color;
   final int wavePeriod;
-  final int waveOffset;
   final int waveAmplitude;
+  final int animDuration;
 
-  SquigglyLines({@required this.color, this.wavePeriod=40, this.waveOffset=10, this.waveAmplitude=4});
+  SquigglyLines({@required this.color,
+                this.animDuration=4,
+                this.wavePeriod=40, this.waveAmplitude=4});
 
   @override
   _SquigglyLinesState createState() => _SquigglyLinesState();
@@ -24,11 +26,11 @@ class _SquigglyLinesState extends State<SquigglyLines> with TickerProviderStateM
 
     controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 4),
+      duration: Duration(seconds: widget.animDuration),
     );
 
-    final Tween<double> _radiusTween = Tween(begin: 0.0, end: 200);
-    animation = _radiusTween.animate(controller)
+    final Tween<double> _tween = Tween(begin: -widget.wavePeriod.toDouble(), end: widget.wavePeriod.toDouble());
+    animation = _tween.animate(controller)
       ..addListener(() {
         setState(() {});
       })
@@ -57,7 +59,6 @@ class _SquigglyLinesState extends State<SquigglyLines> with TickerProviderStateM
           painter: WavePainter(animation.value,
                             widget.color,
                             widget.wavePeriod,
-                            widget.waveOffset,
                             widget.waveAmplitude),
           child: Container(),
         );

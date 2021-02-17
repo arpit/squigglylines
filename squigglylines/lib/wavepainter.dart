@@ -5,10 +5,9 @@ class WavePainter extends CustomPainter {
   final double _animValue;
   final Color color;
   final int wavePeriod;
-  final int waveOffset;
   final int waveAmplitude;
 
-  WavePainter(this._animValue, this.color, this.wavePeriod, this.waveOffset, this.waveAmplitude);
+  WavePainter(this._animValue, this.color, this.wavePeriod, this.waveAmplitude);
 
   final Path path = Path();
 
@@ -25,8 +24,6 @@ class WavePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    //print("---- ${_animValue}");
-
     canvas.clipRect(Rect.fromLTRB(0, 0, size.width, size.height));
 
     final paint = Paint()
@@ -35,10 +32,10 @@ class WavePainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 5;
 
-    final double lineStart = _animValue - size.width;
-    final double lineEnd = size.width;
+    final double lineStart = _animValue - wavePeriod;
+    final double lineEnd = size.width+wavePeriod;
 
-    final baseline = 30;
+    final baseline = size.height/2;
 
     // we need a point at least every segmentWidth, this defines the point
     final double segmentWidth = wavePeriod / SEGMENTS_PER_PERIOD;
@@ -51,7 +48,7 @@ class WavePainter extends CustomPainter {
 
     for (int i = 0; i < amountPoints; i++) {
       final radiansX =
-          calculateOffsetRadians(lineStart, pointX) + waveOffset;
+          calculateOffsetRadians(lineStart, pointX);
       final offsetY = sin(radiansX) * waveAmplitude;
       final y = baseline + offsetY;
 
